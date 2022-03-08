@@ -1,12 +1,12 @@
 const db = require("../models");
 const Company = db.company;
-const Director = db.directors;
 
 // Create and Save a new Company
-exports.create = (req, res) => {
-  const exist = ["Comp1", "Comp2", "Comp3", "Comp4"];
+exports.create = async (req, res) => {
+  //const exist = ["Comp1", "Comp2", "Comp3", "Comp4"];
   // Create a Company
   const company = new Company({
+    businessStatus: req.body.businessStatus,
     companyName: req.body.companyName,
     companyActivity: req.body.companyActivity,
     about: req.body.about,
@@ -15,10 +15,9 @@ exports.create = (req, res) => {
     companyPhone: req.body.companyPhone,
     uen: req.body.uen,
     incorporation: req.body.incorporation,
-    beneficialOwner: req.body.beneficialOwner,
 
-    directors: req.body.directors,
-    shareholders: req.body.shareholders,
+    //directors: req.body.directors,
+    //shareholders: req.body.shareholders,
     //officers: req.body.officers,
   });
 
@@ -36,7 +35,7 @@ exports.create = (req, res) => {
   }*/
 
   // Save Company in the database.
-  company.save(company).then((data) => {
+  await company.save(company).then((data) => {
       res.send(data);
     })
     .catch((err) => {
@@ -51,8 +50,8 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   Company.find()
     .populate("directors")
-    .populate("shareholders")
-    .populate("officers")
+    //.populate("shareholders")
+    //.populate("officers")
     .then((data) => {
       res.send(data);
     })
@@ -64,10 +63,26 @@ exports.findAll = (req, res) => {
     });
 };
 
+// Retrieve all Directors of Company.
+exports.findDirectors = (req, res) => {
+  const id = req.params.id
+  Company.findById(id)
+    .populate("directors")
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving companies.",
+      });
+    });
+};
+
+
 // Find a single Company with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-
   Company.findById(id)
     .then((data) => {
       if (!data)

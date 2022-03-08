@@ -1,6 +1,7 @@
 module.exports = (mongoose) => {
   var schema = mongoose.Schema(
     {
+      id: String,
       firstName: String,
       lastName: String,
       phoneNumber: Number,
@@ -18,6 +19,6 @@ module.exports = (mongoose) => {
     return object;
   });
 
-  const Directors = mongoose.model("directors", schema, "directors");
+  const Directors = mongoose.model("directors", schema);
   return Directors;
 };

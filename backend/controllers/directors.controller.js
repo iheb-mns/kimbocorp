@@ -9,10 +9,13 @@ exports.create = async (req, res) => {
     lastName: req.body.lastName,
     phoneNumber: req.body.phoneNumber,
     beneficialOwner: req.body.beneficialOwner,
-    //company: req.body.company
+    nationality: req.body.nationality,
+    email: req.body.email,
+    company: req.body.company
   });
+  
   await director.save();
-  await Company.findOneAndUpdate({ _id: req.body.company }, { $push: { directors: director } });
+  await Company.findOneAndUpdate({ _id: req.body.company }, { $push: { directors: director._id } });
   res.send("Director was added successfully");
 };
 
@@ -32,7 +35,6 @@ exports.findAll = (req, res) => {
 // Find a single Director with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-
   Directors.findById(id)
     .then((data) => {
       if (!data)
@@ -45,26 +47,11 @@ exports.findOne = (req, res) => {
 };
 
 // Delete a Director with the specified id in the request
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   const id = req.params.id;
-
-  Directors.findByIdAndRemove(id)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot delete Director with id=${id}. Maybe Director was not found!`,
-        });
-      } else {
-        res.send({
-          message: "Director was deleted successfully!",
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete Director with id=" + id,
-      });
-    });
+  await Directors.findByIdAndRemove(id);
+  await Company.findOneAndUpdate({ _id: req.body.company }, { $pullAll: { directors: [{_id: id}] }});  
+  res.send("Director was deleted successfully");
 };
 
 // Update a Director by the id in the request

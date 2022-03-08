@@ -11,24 +11,11 @@ module.exports = (mongoose) => {
       companyPhone: String,
       uen: String,
       incorporation: Boolean,
-      beneficialOwner: Boolean,
       directors: [{
-        //type: mongoose.Schema.Types.ObjectId, ref: "directors",
-        firstName: String,
-        lastName: String,
-        phoneNumber: Number,
-        beneficialOwner: Boolean,
-        nationality: String,
-        email: String
+        type: mongoose.Schema.Types.ObjectId, ref: "directors",
       }],
       shareholders: [{
-        //type: mongoose.Schema.Types.ObjectId, ref: "shareholders"
-        firstName: String,
-        lastName: String,
-        phoneNumber: Number,
-        beneficialOwner: Boolean,
-        nationality: String,
-        email: String,
+        type: mongoose.Schema.Types.ObjectId, ref: "shareholders"
       }],
       officers: [{
         type: mongoose.Schema.Types.ObjectId, ref: "officers"
