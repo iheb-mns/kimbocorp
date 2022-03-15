@@ -11,7 +11,8 @@ exports.create = async (req, res) => {
     beneficialOwner: req.body.beneficialOwner,
     nationality: req.body.nationality,
     email: req.body.email,
-    company: req.body.company
+    company: req.body.company,
+    isApproved : false
   });
   
   await director.save();
@@ -57,13 +58,6 @@ exports.delete = async (req, res) => {
 // Update a Director by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-
-  if (!req.body) {
-    return res.status(400).send({
-      message: "Data to update can not be empty!",
-    });
-  }
-
   Directors.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then((data) => {
       if (!data) {

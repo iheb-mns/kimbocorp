@@ -3,12 +3,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 
-const auth = require('./routes/auth.routes');
-
-//var corsOptions = {
-//  origin: "http://localhost:8081"
-//};
-
 app.use(cors());
 
 // parse requests of content-type - application/json
@@ -21,9 +15,7 @@ require("../backend/routes/company.routes")(app);
 require("../backend/routes/directors.routes")(app);
 require("../backend/routes/officers.routes")(app);
 require("../backend/routes/shareholders.routes")(app);
-
-//require("../backend/routes/auth.routes")(app);
-app.use('/auth', auth)
+require("../backend/routes/files.routes")(app);
 
 //mongo
 const db = require("./models");
@@ -39,7 +31,6 @@ db.mongoose
     console.log("Cannot connect to the database!", err);
     process.exit();
   });
-
 
 // simple route
 app.get("/hello", (req, res) => {

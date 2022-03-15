@@ -2,7 +2,6 @@ module.exports = (mongoose) => {
   var schema = mongoose.Schema(
     {
       id: String,
-      businessStatus: Boolean,
       companyName: String,
       companyActivity: String,
       about: String,
@@ -10,7 +9,12 @@ module.exports = (mongoose) => {
       billingPlan: String,
       companyPhone: String,
       uen: String,
+      businessStatus: Boolean,
       incorporation: Boolean,
+      isApproved: Boolean,
+      files: [{
+        type: mongoose.Schema.Types.ObjectId, ref: "files",
+      }],
       directors: [{
         type: mongoose.Schema.Types.ObjectId, ref: "directors",
       }],

@@ -3,10 +3,8 @@ const Company = db.company;
 
 // Create and Save a new Company
 exports.create = async (req, res) => {
-  //const exist = ["Comp1", "Comp2", "Comp3", "Comp4"];
   // Create a Company
   const company = new Company({
-    businessStatus: req.body.businessStatus,
     companyName: req.body.companyName,
     companyActivity: req.body.companyActivity,
     about: req.body.about,
@@ -14,30 +12,15 @@ exports.create = async (req, res) => {
     billingPlan: req.body.companyLocation,
     companyPhone: req.body.companyPhone,
     uen: req.body.uen,
+    businessStatus: req.body.businessStatus,
     incorporation: req.body.incorporation,
-
-    //directors: req.body.directors,
-    //shareholders: req.body.shareholders,
-    //officers: req.body.officers,
+    isApproved: false,
   });
-
-  // Validate request
-  /*if (!company.companyName || !company.companyActivity || !company.beneficialOwner) {
-    res.status(400).send({ message: "Content can not be empty!" });
-    return;
-  }
-
-  if (exist.includes(req.body.companyName)) {
-    res.status(400).send({
-      message: "It seems like it is available in Singapore"
-    });
-    return;
-  }*/
 
   // Save Company in the database.
   await company.save(company).then((data) => {
-      res.send(data);
-    })
+    res.send(data);
+  })
     .catch((err) => {
       res.status(500).send({
         message:
@@ -66,6 +49,7 @@ exports.findAll = (req, res) => {
 // Retrieve all Directors of Company.
 exports.findDirectors = (req, res) => {
   const id = req.params.id
+
   Company.findById(id)
     .populate("directors")
     .then((data) => {
@@ -79,10 +63,10 @@ exports.findDirectors = (req, res) => {
     });
 };
 
-
 // Find a single Company with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
+
   Company.findById(id)
     .then((data) => {
       if (!data)
@@ -121,23 +105,57 @@ exports.delete = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  if (!req.body) {
-    return res.status(400).send({
-      message: "Data to update can not be empty!",
-    });
-  }
+  const company = new Company({
+    _id: req.params.id,
+    companyName: req.body.companyName,
+    companyActivity: req.body.companyActivity,
+    about: req.body.about,
+    companyLocation: req.body.companyLocation,
+    billingPlan: req.body.companyLocation,
+    companyPhone: req.body.companyPhone,
+    uen: req.body.uen,
+    businessStatus: req.body.businessStatus,
+    incorporation: req.body.incorporation,
+    isApproved: false,
+  })
 
-  Company.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  Company.findByIdAndUpdate({ _id: req.params.id }, company)
     .then((data) => {
       if (!data) {
         res.status(404).send({
           message: `Cannot update Company with id=${id}. Maybe Company was not found!`,
         });
-      } else res.send({ message: "Company was updated successfully." });
+      } else
+        res.send({ message: "Company was updated successfully." });
     })
     .catch((err) => {
       res.status(500).send({
         message: "Error updating Company with id=" + id,
+      });
+    });
+};
+
+// Update a Company by the id in the request
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  const company = new Company({
+    _id: req.params.id,
+    isApproved: true,
+  })
+
+  Company.findByIdAndUpdate({ _id: req.params.id }, company)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot accept Company with id=${id}. Maybe Company was not found!`,
+        });
+      } else
+        res.send({ message: "Company was accepted successfully." });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error accepting Company with id=" + id,
       });
     });
 };

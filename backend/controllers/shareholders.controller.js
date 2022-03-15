@@ -4,7 +4,7 @@ const Company = db.company;
 
 // Create and Save a new shareholder
 exports.create = async (req, res) => {
-  const shareholder = new shareholders({
+  const shareholder = new Shareholders({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     phoneNumber: req.body.phoneNumber,
