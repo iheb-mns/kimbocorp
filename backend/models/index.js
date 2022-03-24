@@ -11,5 +11,6 @@ db.directors = require("./directors.model.js")(mongoose);
 db.shareholders = require("./shareholders.model.js")(mongoose);
 db.officers = require("./officers.model.js")(mongoose);
 db.files = require("./files.model.js")(mongoose);
+db.tasks = require("./tasks.model.js")(mongoose);
 
 module.exports = db;

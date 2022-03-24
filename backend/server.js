@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 
+app.use(express.static('files'));
+
 app.use(cors());
 
 // parse requests of content-type - application/json
@@ -16,6 +18,7 @@ require("../backend/routes/directors.routes")(app);
 require("../backend/routes/officers.routes")(app);
 require("../backend/routes/shareholders.routes")(app);
 require("../backend/routes/files.routes")(app);
+require("../backend/routes/tasks.routes")(app);
 
 //mongo
 const db = require("./models");

@@ -12,9 +12,6 @@ module.exports = (mongoose) => {
       businessStatus: Boolean,
       incorporation: Boolean,
       isApproved: Boolean,
-      files: [{
-        type: mongoose.Schema.Types.ObjectId, ref: "files",
-      }],
       directors: [{
         type: mongoose.Schema.Types.ObjectId, ref: "directors",
       }],
@@ -24,6 +21,12 @@ module.exports = (mongoose) => {
       officers: [{
         type: mongoose.Schema.Types.ObjectId, ref: "officers"
       }],
+      files: [{
+        type: mongoose.Schema.Types.ObjectId, ref: "files",
+      }],
+      tasks: [{
+        type: mongoose.Schema.Types.ObjectId, ref: "tasks",
+      }]
     },
     { timestamps: true }
   );

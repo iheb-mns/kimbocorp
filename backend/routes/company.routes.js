@@ -18,8 +18,5 @@ module.exports = (app) => {
   // Update a Company with id
   router.put("/:id", company.update);
 
-  // Retrieve Directors
-  router.get("/directors/:id", company.findDirectors);
-
   app.use("/api/company", router);
 };

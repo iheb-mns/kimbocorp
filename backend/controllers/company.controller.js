@@ -33,25 +33,8 @@ exports.create = async (req, res) => {
 exports.findAll = (req, res) => {
   Company.find()
     .populate("directors")
-    //.populate("shareholders")
-    //.populate("officers")
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving companies.",
-      });
-    });
-};
-
-// Retrieve all Directors of Company.
-exports.findDirectors = (req, res) => {
-  const id = req.params.id
-
-  Company.findById(id)
-    .populate("directors")
+    .populate("shareholders")
+    .populate("officers")
     .then((data) => {
       res.send(data);
     })
@@ -116,7 +99,7 @@ exports.update = (req, res) => {
     uen: req.body.uen,
     businessStatus: req.body.businessStatus,
     incorporation: req.body.incorporation,
-    isApproved: false,
+    isApproved: false
   })
 
   Company.findByIdAndUpdate({ _id: req.params.id }, company)
@@ -135,7 +118,7 @@ exports.update = (req, res) => {
     });
 };
 
-// Update a Company by the id in the request
+// Approve a Company by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 

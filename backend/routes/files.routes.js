@@ -1,5 +1,5 @@
 module.exports = (app) => {
-  const company = require("../controllers/files.controller.js");
+  const files = require("../controllers/files.controller.js");
   var router = require("express").Router();
   const multer = require('multer');
 
@@ -28,8 +28,11 @@ module.exports = (app) => {
     fileFilter: multerFilter,
   });
 
-  // Create a new Company
-  router.post("/", upload.single("file"), company.create);
+  // Create a new File
+  router.post("/", upload.single("file"), files.create);
+
+  // get
+  router.get("/", files.findAll);
 
   app.use("/api/files", router);
 };

@@ -12,9 +12,9 @@ exports.create = async (req, res) => {
     nationality: req.body.nationality,
     email: req.body.email,
     company: req.body.company,
-    isApproved : false
+    isApproved: false
   });
-  
+
   await director.save();
   await Company.findOneAndUpdate({ _id: req.body.company }, { $push: { directors: director._id } });
   res.send("Director was added successfully");
@@ -50,8 +50,9 @@ exports.findOne = (req, res) => {
 // Delete a Director with the specified id in the request
 exports.delete = async (req, res) => {
   const id = req.params.id;
+  const idCompany = await Directors.findById(id, 'company').exec()
   await Directors.findByIdAndRemove(id);
-  await Company.findOneAndUpdate({ _id: req.body.company }, { $pullAll: { directors: [{_id: id}] }});  
+  await Company.findOneAndUpdate({ _id: idCompany.company }, { $pullAll: { directors: [{ _id: id }] } });
   res.send("Director was deleted successfully");
 };
 
