@@ -88,21 +88,19 @@ exports.delete = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  const company = new Company({
-    _id: req.params.id,
-    companyName: req.body.companyName,
-    companyActivity: req.body.companyActivity,
-    about: req.body.about,
-    companyLocation: req.body.companyLocation,
-    billingPlan: req.body.companyLocation,
-    companyPhone: req.body.companyPhone,
-    uen: req.body.uen,
-    businessStatus: req.body.businessStatus,
-    incorporation: req.body.incorporation,
-    isApproved: false
-  })
-
-  Company.findByIdAndUpdate({ _id: req.params.id }, company)
+  Company.findByIdAndUpdate(id,
+    {
+      companyName: req.body.companyName,
+      companyActivity: req.body.companyActivity,
+      about: req.body.about,
+      companyLocation: req.body.companyLocation,
+      billingPlan: req.body.companyLocation,
+      companyPhone: req.body.companyPhone,
+      uen: req.body.uen,
+      businessStatus: req.body.businessStatus,
+      incorporation: req.body.incorporation,
+      isApproved: false
+    })
     .then((data) => {
       if (!data) {
         res.status(404).send({
@@ -119,15 +117,10 @@ exports.update = (req, res) => {
 };
 
 // Approve a Company by the id in the request
-exports.update = (req, res) => {
+exports.approve = (req, res) => {
   const id = req.params.id;
 
-  const company = new Company({
-    _id: req.params.id,
-    isApproved: true,
-  })
-
-  Company.findByIdAndUpdate({ _id: req.params.id }, company)
+  Company.findByIdAndUpdate(id, { isApproved: true })
     .then((data) => {
       if (!data) {
         res.status(404).send({

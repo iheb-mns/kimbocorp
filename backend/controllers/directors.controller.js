@@ -56,20 +56,51 @@ exports.delete = async (req, res) => {
   res.send("Director was deleted successfully");
 };
 
-// Update a Director by the id in the request
+// Update a Direct by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  Directors.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+
+  Directors.findByIdAndUpdate(id,
+    {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      phoneNumber: req.body.phoneNumber,
+      beneficialOwner: req.body.beneficialOwner,
+      nationality: req.body.nationality,
+      email: req.body.email,
+      isApproved: false
+    })
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot update Director with id=${id}. Maybe Directors was not found!`,
+          message: `Cannot update Director with id=${id}. Maybe Director was not found!`,
         });
-      } else res.send({ message: "Director was updated successfully." });
+      } else
+        res.send({ message: "Director was updated successfully." });
     })
     .catch((err) => {
       res.status(500).send({
         message: "Error updating Director with id=" + id,
+      });
+    });
+};
+
+// Approve a Director by the id in the request
+exports.approve = (req, res) => {
+  const id = req.params.id;
+
+  Directors.findByIdAndUpdate(id, { isApproved: true })
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot accept Director with id=${id}. Maybe Director was not found!`,
+        });
+      } else
+        res.send({ message: "Director was accepted successfully." });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error accepting Director with id=" + id,
       });
     });
 };

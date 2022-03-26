@@ -28,6 +28,6 @@ exports.createSubTask = async (req, res) => {
 
 // Check and Uncheck subTask by the id in the request
 exports.update = (req, res) => {
-  Tasks.findByIdAndUpdate({ _id: '623a12a8d46997f99337f88f' }, { isChecked: true })
+  Tasks.findByIdAndUpdate({ _id: req.body.id }, { isChecked: true })
   res.send("SubTask was checked successfully");
 };

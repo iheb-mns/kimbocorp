@@ -18,5 +18,8 @@ module.exports = (app) => {
   // Update a Director with id
   router.put("/:id", directors.update);
 
+  // Approve a Director with id
+  router.put("/approve/:id", directors.approve);
+
   app.use("/api/directors", router);
 };
