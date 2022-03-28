@@ -18,5 +18,8 @@ module.exports = (app) => {
     // Update a Officer with id
     router.put("/:id", officers.update);
 
+    // Approve a Officer with id
+    router.put("/approve/:id", officers.approve);
+
     app.use("/api/officers", router);
 };

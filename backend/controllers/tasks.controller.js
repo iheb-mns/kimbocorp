@@ -8,7 +8,7 @@ exports.create = async (req, res) => {
     title: req.body.title,
     company: req.body.company
   });
-  
+
   await task.save();
   await Company.findOneAndUpdate({ _id: req.body.company }, { $push: { tasks: task._id } });
   res.send("Task was added successfully");

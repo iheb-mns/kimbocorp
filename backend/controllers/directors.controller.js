@@ -36,6 +36,7 @@ exports.findAll = (req, res) => {
 // Find a single Director with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
+
   Directors.findById(id)
     .then((data) => {
       if (!data)

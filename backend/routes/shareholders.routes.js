@@ -18,5 +18,8 @@ module.exports = (app) => {
     // Update a Shareholder with id
     router.put("/:id", shareholders.update);
 
+    // Approve a Shareholder with id
+    router.put("/approve/:id", shareholders.approve);
+
     app.use("/api/shareholders", router);
 };

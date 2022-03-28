@@ -17,7 +17,7 @@ module.exports = (app) => {
 
   // Update a Company with id
   router.put("/:id", company.update);
-  
+
   // Approve a Company with id
   router.put("/approve/:id", company.approve);
 

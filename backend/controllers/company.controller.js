@@ -35,6 +35,7 @@ exports.findAll = (req, res) => {
     .populate("directors")
     .populate("shareholders")
     .populate("officers")
+    .populate("tasks")
     .then((data) => {
       res.send(data);
     })

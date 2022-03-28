@@ -7,6 +7,7 @@ module.exports = (mongoose) => {
       beneficialOwner: Boolean,
       nationality: String,
       email: String,
+      isApproved: Boolean,
       company: { type: mongoose.Schema.Types.ObjectId, ref: "company" }
     },
     { timestamps: true }

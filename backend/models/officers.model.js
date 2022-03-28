@@ -8,6 +8,7 @@ module.exports = (mongoose) => {
       dateOfAppointment: Date,
       nationality: String,
       position: String,
+      isApproved: Boolean,
       company: { type: mongoose.Schema.Types.ObjectId, ref: "company" }
     },
     { timestamps: true }
