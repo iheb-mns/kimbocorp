@@ -1,6 +1,7 @@
 module.exports = (mongoose) => {
   var schema = mongoose.Schema(
     {
+      id: String,
       firstName: String,
       lastName: String,
       phoneNumber: Number,

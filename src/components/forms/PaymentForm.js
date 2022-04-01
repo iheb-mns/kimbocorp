@@ -45,12 +45,12 @@ export default function PaymentForm({myform}) {
      
      // window.location.href="/members";
     }
-    console.log(myform);
-    console.log(paymentForm);
+    //console.log(myform);
+    //console.log(paymentForm);
     const saveForm = () => {
       //window.location.href="/members";
       axios.post('http://localhost:5000/api/company', {'paymentForm': paymentForm}).then((response)=>{
-        console.log(response);
+        //console.log(response);
       })
     }
     const changeYear = (ev, value) => {

@@ -15,7 +15,7 @@ exports.create = async (req, res) => {
   });
 
   await shareholder.save();
-  await Shareholders.findOneAndUpdate({ _id: req.body.company }, { $push: { shareholders: shareholder._id } });
+  await Company.findOneAndUpdate({ _id: req.body.company }, { $push: { shareholders: shareholder._id } });
   res.send("Shareholder was added successfully");
 };
 
