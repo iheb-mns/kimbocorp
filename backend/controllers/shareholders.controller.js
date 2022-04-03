@@ -2,20 +2,27 @@ const db = require("../models");
 const Shareholders = db.shareholders;
 const Company = db.company;
 
-// Create and Save a new shareholder
+// Create and Save a new Shareholder
 exports.create = async (req, res) => {
-  const shareholder = new Shareholders({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    phoneNumber: req.body.phoneNumber,
-    email: req.body.email,
-    dateOfAppointment: req.body.dateOfAppointment,
-    company: req.body.company,
+  const shareholder = req.body.map((item) => new Shareholders({
+    firstName: item.firstName,
+    lastName: item.lastName,
+    phoneNumber: item.phoneNumber,
+    email: item.email,
+    dateOfAppointment: item.dateOfAppointment,
+    company: item.company,
     isApproved: false
-  });
+  }));
 
-  await shareholder.save();
-  await Company.findOneAndUpdate({ _id: req.body.company }, { $push: { shareholders: shareholder._id } });
+  const id = shareholder.map((item) => item._id);
+  const company = shareholder.map((item) => item.company);
+
+  await Shareholders.insertMany(shareholder);
+  await Company.findOneAndUpdate(
+    { _id: company },
+    { $addToSet: { shareholders: { $each: id } } }
+  )
+
   res.send("Shareholder was added successfully");
 };
 

@@ -4,19 +4,26 @@ const Company = db.company;
 
 // Create and Save a new Director
 exports.create = async (req, res) => {
-  const director = new Directors({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    phoneNumber: req.body.phoneNumber,
-    beneficialOwner: req.body.beneficialOwner,
-    nationality: req.body.nationality,
-    email: req.body.email,
-    company: req.body.company,
+  const director = req.body.map((item) => new Directors({
+    firstName: item.firstName,
+    lastName: item.lastName,
+    phoneNumber: item.phoneNumber,
+    beneficialOwner: item.beneficialOwner,
+    nationality: item.nationality,
+    email: item.email,
+    company: item.company,
     isApproved: false
-  });
+  }));
 
-  await director.save();
-  await Company.findOneAndUpdate({ _id: req.body.company }, { $push: { directors: director._id } });
+  const id = director.map((item) => item._id);
+  const company = director.map((item) => item.company);
+
+  await Directors.insertMany(director);
+  await Company.findOneAndUpdate(
+    { _id: company },
+    { $addToSet: { directors: { $each: id } } }
+  )
+
   res.send("Director was added successfully");
 };
 

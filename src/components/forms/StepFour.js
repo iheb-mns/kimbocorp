@@ -15,45 +15,54 @@ export default function StepFour({ myform, setSteps, setMyForm }) {
   const [addressValid, setAddressValid] = useState(true);
   const [shopPayment, setShowPayment] = useState(false);
 
-  /*const directorsList = myform.directors
-  const data = JSON.stringify(directorsList)
-  const config = {
-    headers: {'Content-Type': 'application/json'}
-}*/
-
-  console.log(myform.shareholders[0].email)
-
   const saveData = () => {
     if (addressValid) {
       localStorage.setItem('buisness', JSON.stringify(myform));
       axios.post('http://localhost:5050/api/company',
         {
-          'companyName': myform.companyName, 'companyActivity': myform.companyActivity,
-          'uen': myform.uen, 'incorporation': myform.incorporation, 'beneficialOwner': myform.beneficialOwner,
+          'companyName': myform.companyName,
+          'companyActivity': myform.companyActivity,
+          'uen': myform.uen,
+          'incorporation': myform.incorporation,
+          'beneficialOwner': myform.beneficialOwner,
           'companyLocation': '151 Chin Swee Road Manhattan House 02-24 Singapore 169876'
         })
         .then((response) => {
-          axios.post('http://localhost:5050/api/directors',
-            {
-              'firstName': myform.aboutYou.firstName,
-              'lastName': myform.aboutYou.lastName,
-              'email': myform.aboutYou.email,
-              'nationality': myform.aboutYou.nationality,
-              'phoneNumber': myform.aboutYou.phoneNumber,
-              'company': response.data.id
-            }
+          const director = ({
+            firstName: myform.aboutYou.firstName,
+            lastName: myform.aboutYou.lastName,
+            phoneNumber: myform.aboutYou.phoneNumber,
+            beneficialOwner: true,
+            nationality: myform.aboutYou.nationality,
+            email: myform.aboutYou.email,
+            company: response.data.id,
+            isApproved: false
+          });
+          const directors = myform.directors.map((item) => ({
+            firstName: item.firstName,
+            lastName: item.lastName,
+            phoneNumber: item.phoneNumber,
+            beneficialOwner: false,
+            nationality: item.nationality,
+            email: item.email,
+            company: response.data.id,
+            isApproved: false
+          }));
 
-          )
-          axios.post('http://localhost:5050/api/shareholders',
-            {
-              'firstName': myform.shareholders[0].firstName,
-              'lastName': myform.shareholders[0].lastName,
-              'email': myform.shareholders[0].email,
-              'nationality': myform.shareholders[0].nationality,
-              'phoneNumber': myform.shareholders[0].phoneNumber,
-              'company': response.data.id
-            }
-          )
+          directors.push(director)
+
+          axios.post('http://localhost:5050/api/directors', directors)
+
+          const shareholder = myform.shareholders.map((item) => ({
+            firstName: item.firstName,
+            lastName: item.lastName,
+            phoneNumber: item.phoneNumber,
+            nationality: item.nationality,
+            email: item.email,
+            company: response.data.id,
+            isApproved: false
+          }));
+          axios.post('http://localhost:5050/api/shareholders', shareholder)
 
         })
       setShowPayment(true);
